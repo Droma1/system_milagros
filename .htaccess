@@ -1,0 +1,5 @@
+Options All -Indexes
+
+RewriteEngine On
+RewriteRule ^([a-zA-Z0-9/]+)$ index.php?page=$1
+AddType 'text/html; charset=UTF-8' html

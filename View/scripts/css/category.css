@@ -1,0 +1,27 @@
+.bg-mellore{
+    box-shadow: 0px 1px 10px 0px #989898;
+}
+.icon{
+    position: relative;
+    display: block;
+    padding: 10px;
+    background-color: #F7B748;
+    text-align: center;
+    float: right;
+    font-size: 27px;
+    transform: translateY(10%);
+}
+.inner{
+    position: relative;
+    display: block;
+    float: left;
+}
+.icon:hover{
+    font-size: 30px;
+    transition: .3s linear;
+    
+}
+.bg-mellore:hover{
+    background-color: #F7B748;
+    transition: .3s linear;
+}
