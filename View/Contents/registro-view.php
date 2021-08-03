@@ -14,7 +14,7 @@
                 <br>
                 <div class="card">
                     <div class="card-body">
-                        <h6>Operaicones</h6>
+                        <h6>Operaciones</h6>
                         <ol class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                 <div class="ms-2 me-auto">
@@ -83,6 +83,28 @@
                                             <?php } ?>
                                         </select>
                                     </div>
+                                    <?php 
+                                        if(substr($_SESSION['tipo_user'],0,2) == "DC"){
+                                            ?>
+                                            <div class="col-md-6"><label for="">Grado</label>
+                                                <select name="grado" id="grado" class="form-select">
+                                                    <option value="">Primero</option>
+                                                    <option value="">Segundo</option>
+                                                    <option value="">Tercero</option>
+                                                    <option value="">Cuarto</option>
+                                                    <option value="">Quinto</option>
+                                                    <option value="">Todos</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6"><label for="">Seccion</label>
+                                                <select name="seccion" id="seccion" class="form-select">
+                                                    <option value="">A</option>
+                                                    <option value="">B</option>
+                                                </select>
+                                            </div>
+                                                    <?php                                            
+                                        }
+                                     ?>
                                     <div class="col-md-4">
                                         <label for="">Formato del documento:</label>
                                         <select name="formato" id="formato" class="form-select">

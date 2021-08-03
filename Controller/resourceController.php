@@ -79,17 +79,21 @@
             $F1_name = $_FILES['file-6']['name'];
                 //echo $F1_name;
                 if($F1_name !=""){
-                    $type=$_FILES['file-6']['type'];
-                    $tmp_name = $_FILES['file-6']["tmp_name"];
-                    $name = $_FILES['file-6']["name"];
-                    //$name = preg_replace('/\s+/', '', $name);
-                    $nuevo_path= "../resources/".$name;
-                    //echo $nuevo_path;
-                    move_uploaded_file($tmp_name,$nuevo_path);
-                    $array=explode('.',$nuevo_path);
-                    $ruta1 = $nuevo_path;
-                    $arch=$F1_name;
-                    $ext= end($array);
+                    try{
+                        $type=$_FILES['file-6']['type'];
+                        $tmp_name = $_FILES['file-6']["tmp_name"];
+                        $name = $_FILES['file-6']["name"];
+                        $name = preg_replace('/\s+/', '', $name);
+                        $nuevo_path= "../View/resources/".$name;
+                        //echo $nuevo_path;
+                        move_uploaded_file($tmp_name,$nuevo_path);
+                        $array=explode('.',$nuevo_path);
+                        $ruta1 = $nuevo_path;
+                        $arch=$name;
+                        $ext= end($array);
+                    }catch(Exception $e){
+                        $arch = "";
+                    }
 
                 }else{
                     $arch = "";
@@ -130,6 +134,14 @@
                     ];
                 }
                 return mainModel::alerts($alerta);
+        }
+        public function edith_view($dato){
+            $consulta = resourceModel::edith_v($dato);
+            return $consulta;
+        }
+        public function counters(){
+            $consulta = resourceModel::counters_();
+            return $consulta;
         }
     }
 ?>

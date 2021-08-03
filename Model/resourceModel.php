@@ -74,5 +74,13 @@
             $sql = mainModel::consulta_simple("call registro_resource('".$dato["file"]."','%".$dato["tipo"]."%','".$dato["title"]."',".$dato["curse"].",'".$dato["date"]."','".$dato["user"]."','".$dato["descript"]."','%".$dato["formate"]."%');");
             return $sql;
         }
+        protected function edith_v($dato){
+            $sql = mainModel::consulta_simple("select * from edith_view where id_archivo = ".$dato.";");
+            return $sql;
+        }
+        protected function counters_(){
+            $sql = mainModel::consulta_simple("call counters();");
+            return $sql;
+        }
      }
 ?>

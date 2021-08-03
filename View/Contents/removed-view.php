@@ -15,7 +15,7 @@
                 <br>
                 <div class="card">
                     <div class="card-body">
-                        <h6>Operaicones</h6>
+                    <h6>Operaciones</h6>
                         <ol class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                 <div class="ms-2 me-auto">
@@ -91,10 +91,17 @@
                                         }
                                     ?>
                                     <td><i class="icon-file-<?php echo $icon; ?>"></i></td>
-                                    <td><form action="reading" method="post">
+                                    <td><?php if(substr($_SESSION['tipo_user'],0,2) == "DC"){ ?>
+                                        <form action="edith" method="post">
                                             <label for="<?php echo $lista[6]; ?>" class="icon-eye"></label>
                                             <input style="display:none;" type="submit" value="<?php echo $lista[6]; ?>" name="send" id="<?php echo $lista[6]; ?>">
-                                        </form></td>
+                                        </form>
+                                        <?php }else if(substr($_SESSION['tipo_user'],0,2) == "AL"){ ?>
+                                        <form action="reading" method="post">
+                                            <label for="<?php echo $lista[6]; ?>" class="icon-eye"></label>
+                                            <input style="display:none;" type="submit" value="<?php echo $lista[6]; ?>" name="send" id="<?php echo $lista[6]; ?>">
+                                        </form>
+                                        <?php } ?></td>
                                 </tr>
                                 <?php } ?>
                                 </tbody>

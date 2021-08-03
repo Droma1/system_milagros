@@ -201,7 +201,7 @@ body {
   .tarjet{
     position: absolute;
     text-align: center;
-    top: 189px;
+    top: calc(100% - 97px);
     left: -44px;
     transform: rotate(-135deg);
     border-right: 30px solid transparent;
