@@ -82,5 +82,21 @@
             $sql = mainModel::consulta_simple("call counters();");
             return $sql;
         }
+        protected function publish_a(){
+            $sql = mainModel::consulta_simple("select * from resource_alum where estado = 1;");
+            return $sql;
+        }
+        protected function observerd_a(){
+            $sql = mainModel::consulta_simple("select * from resource_alum where estado = 2;");
+            return $sql;
+        }
+        protected function pending_a(){
+            $sql = mainModel::consulta_simple("select * from resource_alum where estado = 3;");
+            return $sql;
+        }
+        protected function remov_a(){
+            $sql = mainModel::consulta_simple("select * from resource_alum where estado = 4;");
+            return $sql;
+        }
      }
 ?>

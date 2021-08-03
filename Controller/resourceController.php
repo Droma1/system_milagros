@@ -143,5 +143,22 @@
             $consulta = resourceModel::counters_();
             return $consulta;
         }
+        public function resources_a($dato){
+            switch($dato){
+                case 1:
+                    $consulta = resourceModel::publish_a();
+                    break;
+                case 2:
+                    $consulta = resourceModel::observerd_a();
+                    break;
+                case 3:
+                    $consulta = resourceModel::pending_a();
+                    break;
+                case 4:
+                    $consulta = resourceModel::remov_a();
+                    break;
+            }
+            return $consulta;
+        }
     }
 ?>

@@ -7,6 +7,10 @@
     $veri = $name->my_resources($_SESSION['tipo_user'],1);
     $verify = $veri->fetch();
     //var_dump($count);
+    if(substr($_SESSION['tipo_user'],0,2) == "DC"){
+        $contadores = $name->counters();
+        $val = $contadores->fetch();
+    }
 ?>
 <section class="content">
     <div class="container">
@@ -47,6 +51,36 @@
                                 <span class="badge bg-primary rounded-pill"><?php echo $count[3]; ?></span>
                             </li>
                         </ol>
+                        <br>
+                        <?php if(substr($_SESSION['tipo_user'],0,2) == "DC"){ ?>
+                        <h6>Recursos de Alumnos</h6>
+                        <ol class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                <a href="publishAlumno"><i class="icon-publish text-success"></i> Publicados</a>
+                                </div>
+                                <span class="badge bg-primary rounded-pill"><?php echo $val[0]; ?></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                <a href="observedAlumno"><i class="icon-eye text-warning"></i> Observados</a>
+                                </div>
+                                <span class="badge bg-primary rounded-pill"><?php echo $val[1]; ?></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                <a href="pendingAlumno"><i class="icon-clock text-info"></i> Pendientes</a>
+                                </div>
+                                <span class="badge bg-primary rounded-pill"><?php echo $val[2]; ?></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                <a href="removedAlumno"><i class="icon-doc-remove text-danger"></i> Removidos</a>
+                                </div>
+                                <span class="badge bg-primary rounded-pill"><?php echo $val[3]; ?></span>
+                            </li>
+                        </ol> 
+                        <?php } ?>
                     </div>
                 </div>
             </div>
