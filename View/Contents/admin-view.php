@@ -33,6 +33,7 @@
                       <li><a href="perfil">Perfil</a></li>
                       <li><a href="resourses">Recursos</a></li>
                       <li><a href="registro">Registro</a></li>
+                      <li><a href="registroAlumno">Usuarios</a></li>
                       <li><a href="Out">salir</a></li>
                     </ul>
                   </div>
@@ -47,6 +48,7 @@
       <li><a href="home">Inicio</a></li>
       <li><a href="resourses">Recursos</a></li>
       <li><a href="registro">Registro</a></li>
+      <li><a href="registroAlumno">Usuarios</a></li>
       <li><a href="Out">salir</a></li>
     </ul>
   </div>
