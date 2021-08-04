@@ -28,6 +28,7 @@
             switch($vistasR){
                 case 'home':
                 include "./View/Contents/category.php";
+                /********************************** */
                 break;
                 default:
                 include $vistasR;

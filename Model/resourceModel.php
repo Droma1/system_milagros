@@ -98,5 +98,13 @@
             $sql = mainModel::consulta_simple("select * from resource_alum where estado = 4;");
             return $sql;
         }
+        protected function grado_r(){
+            $sql = mainModel::consulta_simple("select id_grado,text_grado,nro_grado from grado order by nro_grado asc;");
+            return $sql;
+        }
+        protected function edith_file_($dato){
+            $sql = mainModel::consulta_simple("call editar_archivo('".$dato["titulo"]."','".$dato["descript"]."','".$dato["fecha"]."',".$dato["estado"].",".$dato["id"].");");
+            return $sql;
+        }
      }
 ?>

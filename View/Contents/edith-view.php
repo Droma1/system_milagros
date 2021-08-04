@@ -37,7 +37,7 @@
                <br>
            </div>
            <div class="card-body">
-               <form action="#" method="post">
+               <form action="<?php echo SERVERURL ?>Ajax/resourcesAjax.php" class="formAjax" method="post">
                    <div class="form-group">
                        <div class="row">
                            <div class="col-md-4">
@@ -100,7 +100,7 @@
                        <div class="row">
                            <div class="col-md-12">
                                <label for="">Descripcion: </label>
-                               <textarea name="descripcion" id="descripcion" value="<?php echo $count[8]; ?>" <?php echo $edith; ?> class="form-control"></textarea>
+                               <textarea name="descripcion" id="descripcion" value="" <?php echo $edith; ?> class="form-control"><?php echo $count[8]; ?></textarea>
                            </div>
                        </div>
                    </div>
@@ -120,6 +120,10 @@
                                    <option value="4">Removido</option>
                                </select>
                            </div>
+                           <div class="col-md-4">
+                               <label for="">Identificador de archivo:</label>
+                               <input type="text" name="id_a" id="id_a" class="form-control" readonly value="<?php echo $_POST['send']; ?>">
+                           </div>
                        </div>
                    </div>
                    <br>
@@ -130,6 +134,7 @@
                            </div>
                        </div>
                    </div>
+                   <div class="RespuestaAjax"></div>
                </form>
            </div>
        </div>

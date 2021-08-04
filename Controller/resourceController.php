@@ -160,5 +160,51 @@
             }
             return $consulta;
         }
+        public function grado_(){
+            $consulta = resourceModel::grado_r();
+            return $consulta;
+        }
+        public function edith_file(){
+            $titulo = mainModel::clear_string($_POST['titulo']);
+            $descript = mainModel::clear_string($_POST['descripcion']);
+            $fecha_edith = date('Y-m-d');
+            $estado = mainModel::clear_string($_POST['estado']);
+            $id = mainModel::clear_string($_POST['id_a']);
+
+            if($titulo !="" && $descript !=""){
+                    $actualizar = [
+                        "titulo" => $titulo,
+                        "descript" => $descript,
+                        "fecha" => $fecha_edith,
+                        "estado" => $estado,
+                        "id" => $id
+                    ];
+                    $query = resourceModel::edith_file_($actualizar);
+                    if($query->rowCount()>=1){
+                        $alerta = [
+                            "Alerta" => "simple",
+                            "icon" => "success",
+                            "title" => "Registro exitoso!",
+                            "msg" => "!Su registro fue procesado exitosamente¡."
+                        ];
+                    }else{
+                        $alerta = [
+                            "Alerta" => "simple",
+                            "icon" => "warning",
+                            "title" => "Error al Procesar formulario",
+                            "msg" => "se produjo un error al registrar el formulario, profavor verifique en su tabla de esperas..."
+                        ];
+                    }
+
+            }else{
+                $alerta = [
+                    "Alerta" => "simple",
+                    "icon" => "error",
+                    "title" => "Error al Procesar formulario",
+                    "msg" => "!Verifique que todos los campos del formulario esten completos.¡"
+                ];
+            }
+            return mainModel::alerts($alerta);
+        }
     }
 ?>

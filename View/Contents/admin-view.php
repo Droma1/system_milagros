@@ -1,7 +1,7 @@
 <?php
   require_once "./Controller/docenteController.php";
   $name = new docenteController();
-  $datos = $name->perfil_docente($_SESSION["tipo_user"]);
+  $datos = $name->perfil_docente($_SESSION["tipo_user"]);// codigo del docente DC_1
   $perfil = $datos->fetch();
 ?>
 <section class="content header_main">

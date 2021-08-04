@@ -113,7 +113,7 @@
                                     <td><?php echo $lista[1]; ?></td>
                                     <td><?php echo $lista[2]; ?></td>
                                     <td><?php echo $lista[3]; ?></td>
-                                    <td><i class="badge bg-warning rounded-pill">Observado (code <?php echo $lista[4]; ?>)</i></td>
+                                    <td><i class="badge bg-success rounded-pill">Publicado (code <?php echo $lista[4]; ?>)</i></td>
                                     <?php 
                                         if($lista[5] == 'Docx.'){
                                             $icon = 'word';

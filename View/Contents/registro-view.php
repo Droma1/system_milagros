@@ -1,6 +1,7 @@
 <?php
     require_once "./Controller/resourceController.php";
     $name = new resourceController();
+    $grado = $name->grado_();
     $counts = $name->count_resources($_SESSION['tipo_user']);
     $count = $counts->fetch();
     $materias = $name->curse($_SESSION['tipo_user']);
@@ -9,6 +10,9 @@
     if(substr($_SESSION['tipo_user'],0,2) == "DC"){
         $contadores = $name->counters();
         $val = $contadores->fetch();
+        $form = "docenteAjax";
+    }else{
+        $form = "resourcesAjax";
     }
 ?>
 <section class="content">
@@ -89,7 +93,7 @@
                     <div class="card-body">
                         <h6>Registrar</h6>
                         <br>
-                        <form action="<?php echo SERVERURL ?>Ajax/resourcesAjax.php" method="post" enctype="multipart/form-data" class="formAjax">
+                        <form action="<?php echo SERVERURL ?>Ajax/<?php echo $form; ?>.php" method="post" enctype="multipart/form-data" class="formAjax">
                             <div class="from-group">
                                 <label for="file" class="formFile">Seleccione su archivo a publicar:</label> <!--<i class="icon-trash text-end" style="overflow_hidden;float:right;">Limpiar</i>-->
                                 <div class="container-input">
@@ -122,18 +126,15 @@
                                             ?>
                                             <div class="col-md-6"><label for="">Grado</label>
                                                 <select name="grado" id="grado" class="form-select">
-                                                    <option value="">Primero</option>
-                                                    <option value="">Segundo</option>
-                                                    <option value="">Tercero</option>
-                                                    <option value="">Cuarto</option>
-                                                    <option value="">Quinto</option>
-                                                    <option value="">Todos</option>
+                                                    <?php while($grado_ = $grado->fetch()){ ?>
+                                                    <option value="<?php echo $grado_[0]; ?>"><?php echo $grado_[1]; ?></option>
+                                                    <?php } ?>
                                                 </select>
                                             </div>
                                             <div class="col-md-6"><label for="">Seccion</label>
                                                 <select name="seccion" id="seccion" class="form-select">
-                                                    <option value="">A</option>
-                                                    <option value="">B</option>
+                                                    <option value="A">A</option>
+                                                    <option value="B">B</option>
                                                 </select>
                                             </div>
                                                     <?php                                            
@@ -142,9 +143,9 @@
                                     <div class="col-md-4">
                                         <label for="">Formato del documento:</label>
                                         <select name="formato" id="formato" class="form-select">
-                                            <option value="Pdf">PDF</option>
-                                            <option value="Docx">DOCX</option>
-                                            <option value="xlsx">XLSX</option>
+                                            <option value="PDF.">PDF</option>
+                                            <option value="Docx.">DOCX</option>
+                                            <option value="xlsx.">XLSX</option>
                                         </select>
                                     </div>
                                     <div class="col-md-4">
