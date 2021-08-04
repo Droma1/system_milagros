@@ -2,22 +2,7 @@
     $peticionAjax = true;
     require_once "../Config/Config_general.php";
     require_once "../Controller/resourceController.php";
-    echo $_POST['formato'];
-    echo "<br>";
-    echo $_FILES['file-6']['name'];
-    echo "<br>";
-    echo $_POST['tipo'];
-    echo "<br>";
-    echo $_POST['nombre_file'];
-    echo "<br>";
-    echo $_POST['curso'];
-    echo "<br>";
-    echo $_POST['fecha_s'];
-    echo "<br>";
-    echo $_POST['codigo'];
-    echo "<br>";
-    echo $_POST['decrip_file'];
-    echo "<br>";
+
     if(isset($_POST['cod_user'])){
         $consulta = new resourceController();
         echo  $consulta->filtrer_c();

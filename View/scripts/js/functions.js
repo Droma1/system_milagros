@@ -64,13 +64,14 @@ $(document).ready(function(){
                     return xhr;
                 },
                 success: function (data) {
+                    console.log(data);
                     respuesta.html(data);
                 },
                 error: function() {
                     respuesta.html(msjError);
                 }
             });
-    
+            console.log(respuesta);
             
     
     });

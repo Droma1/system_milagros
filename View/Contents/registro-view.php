@@ -179,8 +179,9 @@
                             <div class="form-group">
                                 <button class="btn btn-success"><i class="icon-upload"></i> Subir</button>
                             </div>
+                            <div class="RespuestaAjax"></div>
                         </form>
-                        <div class="RespuestaAjax"></div>
+                        
                     </div>
                 </div>
             </div>
