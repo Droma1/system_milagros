@@ -17,5 +17,13 @@
              $sql = mainModel::consulta_simple("call registro_resource_d('".$dato["file"]."','".$dato["titulo"]."','".$dato["tema"]."',".$dato["grado"].",'".$dato["seccion"]."','".$dato["formato"]."','".$dato["fecha"]."','".$dato["curso"]."','".$dato["usuario"]."','".$dato["descript"]."');");
              return $sql;
          }
+         protected function registro_docente_($dato){
+             $sql = mainModel::consulta_simple("call registro_docente('".$dato["nombre"]."','".$dato["apellido"]."','".$dato["fecha"]."',".$dato["edad"].",'".$dato["genero"]."','".$dato["usuario"]."','".$dato["clave"]."','".$dato["seccion"]."','".$dato["materia"]."',".$dato["grado"].");");
+             return $sql;
+         }
+         protected function lista_docente_(){
+             $sql = mainModel::consulta_simple("select * from lista_docente;");
+             return $sql;
+         }
      }
 ?>

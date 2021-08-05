@@ -1,16 +1,8 @@
 <?php
-    /*require_once "./Controller/resourceController.php";
-    $name = new resourceController();
-    $counts = $name->count_resources($_SESSION['tipo_user']);
-    $count = $counts->fetch();
-    $resources = $name->my_resources($_SESSION['tipo_user'],1);
-    $veri = $name->my_resources($_SESSION['tipo_user'],1);
-    $verify = $veri->fetch();
-    //var_dump($count);
-    if(substr($_SESSION['tipo_user'],0,2) == "DC"){
-        $contadores = $name->counters();
-        $val = $contadores->fetch();
-    }*/
+    require_once "./Controller/docenteController.php";
+    $name = new docenteController();
+    $lista = $name->lista_docente();
+    
 ?>
 <section class="content">
     <div class="container">
@@ -56,6 +48,68 @@
                         <h6>Lista de Docentes</h6>
                         <br>
                         
+                        <?php if($lista->rowCount()>0){ ?>
+                        <input class="form-control" id="myInput" type="text" placeholder="Search..">
+                        <br>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Fecha de nacimiento</th>
+                                    <th>Edad</th>
+                                    <th>Estado</th>
+                                    <th>genero</th>
+                                    <th>usuario</th>
+                                    <th>Grado</th>
+                                    <th>Seccion</th>
+                                    <th>Materia</th>
+                                </tr>
+                                </thead>
+                                <tbody id="myTable">
+                                    <?php while($listado = $lista->fetch()){ ?>
+                                <tr>
+                                    <td><?php echo $listado[0]; ?></td>
+                                    <td><?php echo $listado[1]; ?></td>
+                                    <td><?php echo $listado[2]; ?></td>
+                                    <td><?php echo $listado[3]; ?></td>
+                                    <td><?php echo $listado[4]; ?></td>
+                                    <?php 
+                                        if($listado[5] == 1){
+                                            $icon = 'success';
+                                            $text = "Activo";
+                                        }else{
+                                            $icon = 'danger';
+                                            $text = "Suspendido";
+                                        }
+                                    ?>
+                                    <td><i class="icon-circle text-<?php echo $icon; ?>"></i> <span><?php echo $text; ?></span></td>
+                                    <td><?php echo $listado[6]; ?></td>
+                                    <td><?php echo $listado[7]; ?></td>
+                                    <td><?php echo $listado[8]; ?></td>
+                                    <td><?php echo $listado[9]; ?></td>
+                                    <td><?php echo $listado[10]; ?></td>
+                                </tr>
+                                <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <script>
+                                $(document).ready(function(){
+                                $("#myInput").on("keyup", function() {
+                                    var value = $(this).val().toLowerCase();
+                                    $("#myTable tr").filter(function() {
+                                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                                    });
+                                });
+                                });
+                        </script>
+                        <?php }else{ ?>
+                            <p> <i class='icon-warning text-warning'></i> !No se encontraron Resultados...¡</p>
+                        <?php } ?>
                         
                         <!---------------------------------------- fin de listado ----------------------------------------------->
                     </div>

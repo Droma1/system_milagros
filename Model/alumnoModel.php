@@ -17,5 +17,9 @@
              $sql = mainModel::consulta_simple("call registro_alumno('".$dato["docente"]."','".$dato["nombre"]."','".$dato["apellido"]."','".$dato["fecha"]."',".$dato["edad"].",'".$dato["genero"]."','".$dato["usuario"]."','".$dato["clave"]."');");
              return $sql;
          }
+         protected function lista_alumno_($dato){
+             $sql = mainModel::consulta_simple("call lista_alumno('".$dato."');");
+             return $sql;
+         }
      }
 ?>

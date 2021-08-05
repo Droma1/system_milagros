@@ -71,5 +71,9 @@
             }
             return mainModel::alerts($alerta);
         }
+        public function lista_alumno($dato){
+            $consulta = alumnoModel::lista_alumno_($dato);
+            return $consulta;
+        }
     }
 ?>
