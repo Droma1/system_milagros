@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-08-2021 a las 04:25:14
+-- Tiempo de generación: 07-08-2021 a las 01:20:16
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.0
 
@@ -56,6 +56,36 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `curses` (IN `cod` VARCHAR(20))  BEG
     end if;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `editar_archivo` (IN `titulo` VARCHAR(200), IN `decrip` VARCHAR(1000), IN `fecha` DATE, IN `estado_` INT(2), IN `ide` INT(5))  BEGIN
+if(estado_ = 1) then
+	update archivo set nombre_archivo = titulo , descripcion = decrip, fecha_publicacion = fecha, estado = estado_ where id_archivo = ide;
+elseif(estado_ = 2) then
+	update archivo set nombre_archivo = titulo , descripcion = decrip, fecha_baja = fecha, estado = estado_ where id_archivo = ide;
+elseif(estado_ = 3) then
+	update archivo set nombre_archivo = titulo , descripcion = decrip, estado = estado_ where id_archivo = ide;
+else
+	update archivo set nombre_archivo = titulo , descripcion = decrip, fecha_baja = fecha, estado = estado_ where id_archivo = ide;
+end if;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `editar_u` (IN `nombre_` VARCHAR(200), IN `apellido_` VARCHAR(200), IN `nacimiento` DATE, IN `edad_` INT(2), IN `estado` INT(2), IN `genero_` VARCHAR(20), IN `user_` VARCHAR(100), IN `codigo` VARCHAR(20), IN `pass` VARCHAR(100), IN `tipo` INT(2))  BEGIN
+	if(tipo = 1) then
+    select id_persona into @id_p from alumno where codigo_alumno = codigo;
+    update persona set nombre_persona = nombre_,apellido_persona = apellido_, fecha_nacimiento = nacimiento,edad = edad_,estado_user = estado,genero = genero_,usuario = user_,clave = pass where id_persona = @id_p;
+    elseif(tipo = 2) then
+    select id_persona into @id_p from docente where codigo_docente = codigo;
+    update persona set nombre_persona = nombre_,apellido_persona = apellido_, fecha_nacimiento = nacimiento,edad = edad_,estado_user = estado,genero = genero_,usuario = user_,clave = pass where id_persona = @id_p;
+    end if;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `lista_alumno` (IN `codigo_d` VARCHAR(20))  BEGIN
+	select id_docente into @id_d from docente where codigo_docente = codigo_d;
+	select nombre_persona,apellido_persona,fecha_nacimiento,edad,estado_user,genero,usuario,text_grado,letra_g,id_docente,id_alumno,codigo_alumno
+	from persona,alumno,grado,seccion
+	where persona.id_persona = alumno.id_persona and grado.id_grado = seccion.id_grado and seccion.id_seccion = alumno.id_seccion and alumno.id_docente = @id_d;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `login` (IN `user_` VARCHAR(50))  BEGIN
 set @codigo=null;
 	if exists (select codigo_alumno from persona,alumno where persona.id_persona = alumno.id_persona and usuario = user_)then 
@@ -98,6 +128,27 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_persona` (IN `codigo` VARCH
     end if;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registro_alumno` (IN `codigo_d` VARCHAR(20), IN `nombre_a` VARCHAR(200), IN `apellido_a` VARCHAR(400), IN `fecha` DATE, IN `edad_` INT(2), IN `genero_` VARCHAR(20), IN `usuario_` VARCHAR(50), IN `clave_` VARCHAR(30))  BEGIN
+select id_docente into @id_d from docente where codigo_docente = codigo_d;
+select id_seccion into @id_s from docente where codigo_docente = codigo_d;
+insert into persona(nombre_persona,apellido_persona,fecha_nacimiento,edad,estado_user,genero,usuario,clave) 
+values(nombre_a,apellido_a,fecha,edad_,1,genero_,usuario_,clave_);
+select LAST_INSERT_ID() INTO @id_pe;
+insert into alumno(id_docente,id_seccion,id_persona,codigo_alumno) 
+values(@id_d,@id_s,@id_pe,concat("AL_",@id_pe));
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registro_docente` (IN `nombre` VARCHAR(20), IN `apellido` VARCHAR(50), IN `fecha` DATE, IN `edad_` INT(2), IN `genero_` VARCHAR(10), IN `usuario_` VARCHAR(100), IN `clave_` VARCHAR(20), IN `seccion_` VARCHAR(3), IN `materia_` VARCHAR(20), IN `grado_` INT(2))  BEGIN
+	select id_seccion into @id_s from seccion where letra_g = seccion_ and id_grado = grado_;
+    select id_materia into @id_m from materia where id_seccion = @id_s and nombre_materia like materia_;
+	insert into persona(nombre_persona,apellido_persona,fecha_nacimiento,edad,estado_user,genero,usuario,clave) 
+    values(nombre,apellido,fecha,edad_,1,genero_,usuario_,clave_);
+    select LAST_INSERT_ID() INTO @id_pe;
+    insert into docente(tutoria,id_materia,id_seccion,id_persona,codigo_docente) 
+    values(1,@id_m,@id_s,@id_pe,concat("DC_",@id_pe));
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `registro_resource` (IN `file_` VARCHAR(350), IN `tipo` VARCHAR(50), IN `title` VARCHAR(200), IN `id_curse` INT(11), IN `date_s` VARCHAR(20), IN `codigo` VARCHAR(20), IN `descript` VARCHAR(1500), IN `formate` VARCHAR(10))  BEGIN
 	select id_persona into @id from alumno where codigo_alumno = codigo;
     select id_categoria into @categoria from categoria_archivo where nombre_categoria like tipo;
@@ -106,6 +157,16 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `registro_resource` (IN `file_` VARC
     
     insert into archivo(nombre_archivo,descripcion,fecha_subida,estado,ubicacion,id_persona,id_seccion,id_tipo,id_categoria,id_materia) 
     values(title,descript,date_s,3,file_,@id,@seccion,@tipo,@categoria,id_curse);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registro_resource_d` (IN `file_` VARCHAR(200), IN `titulo` VARCHAR(200), IN `tema` VARCHAR(200), IN `id_g` INT(8), IN `seccion_` VARCHAR(10), IN `formato` VARCHAR(20), IN `fecha_s` VARCHAR(11), IN `curso` VARCHAR(20), IN `code_user` VARCHAR(20), IN `descrip` VARCHAR(1000))  BEGIN
+	select id_categoria into @id_c from categoria_archivo where nombre_categoria = tema;
+    select id_persona into @id_p from docente where codigo_docente = code_user;
+    select id_seccion into @id_s from seccion where id_grado = id_g and letra_g = seccion_;
+    select id_tipo into @id_formato from tipo_archivo where nombre_tipo = formato;
+    select id_materia into @id_m from materia where id_seccion = @id_s and nombre_materia like curso;
+	insert into archivo(nombre_archivo,descripcion,fecha_publicacion,fecha_subida,estado,ubicacion,id_persona,id_seccion,id_tipo,id_categoria,id_materia) 
+    values(titulo,descrip,fecha_s,fecha_s,1,file_,@id_p,@id_s,@id_formato,@id_c,@id_m);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `resourse_persona` (IN `code_user` VARCHAR(10))  BEGIN
@@ -126,6 +187,14 @@ set @extracting = substring(code_user,1,2);
 		else
 			select "no data" as dato;
             end if;
+    end if;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `user_` (IN `id` INT(2), IN `type_user` INT(2))  BEGIN
+	IF (type_user = 1)then
+		select nombre_persona,apellido_persona,fecha_nacimiento,edad,estado_user,genero,usuario,id_alumno from persona,alumno where persona.id_persona = alumno.id_persona and id_alumno = id;
+    elseif (type_user = 2) then
+		select nombre_persona,apellido_persona,fecha_nacimiento,edad,estado_user,genero,usuario,id_docente from persona,docente where persona.id_persona = docente.id_persona and id_docente = id;
     end if;
 END$$
 
@@ -151,7 +220,8 @@ CREATE TABLE `alumno` (
 
 INSERT INTO `alumno` (`id_alumno`, `id_docente`, `id_seccion`, `id_persona`, `codigo_alumno`) VALUES
 (1, 1, 8, 2, 'AL_1'),
-(3, 1, 7, 4, 'AL_2');
+(3, 1, 7, 4, 'AL_2'),
+(4, 1, 1, 5, 'AL_5');
 
 -- --------------------------------------------------------
 
@@ -183,14 +253,16 @@ CREATE TABLE `archivo` (
 INSERT INTO `archivo` (`id_archivo`, `nombre_archivo`, `tema`, `descripcion`, `fecha_publicacion`, `fecha_subida`, `fecha_baja`, `estado`, `ubicacion`, `id_persona`, `id_seccion`, `id_tipo`, `id_categoria`, `id_materia`) VALUES
 (1, 'solo se aceptan estos formatos', 'Informacion', 'El presente archivo tiene como objetivo el informar a los usuarios los tipos de archivos permitidos subir a la plataforma', '2021-07-19', '2021-07-19', '0000-00-00', 2, 'pdf1.pdf', 1, 1, 2, 2, 2),
 (2, 'Formatos aceptados', 'Informacion', 'El presente archivo tiene como objetivo el informar a los usuarios los tipos de archivos permitidos subir a la plataforma', '2021-07-19', '2021-07-19', '0000-00-00', 1, 'pdf1.pdf', 1, 1, 2, 2, 2),
-(3, 'solo se aceptan estos formatos', 'Informacion', 'El presente archivo tiene como objetivo el informar a los usuarios los tipos de archivos permitidos subir a la plataforma', '2021-07-19', '2021-07-19', '0000-00-00', 3, 'pdf1.pdf', 1, 1, 2, 1, 2),
+(3, 'solo se aceptan estos formatos', 'Informacion', 'El presente archivo tiene como objetivo el informar a los usuarios los tipos de archivos permitidos subir a la plataforma', '2021-08-04', '2021-07-19', '2021-08-04', 4, 'pdf1.pdf', 1, 1, 2, 1, 2),
 (4, 'solo se aceptan estos formatos', 'Informacion', 'El presente archivo tiene como objetivo el informar a los usuarios los tipos de archivos permitidos subir a la plataforma', '2021-07-19', '2021-07-19', '0000-00-00', 1, 'pdf1.pdf', 1, 1, 3, 1, 2),
 (5, 'solo se aceptan estos formatos', 'Informacion', 'El presente archivo tiene como objetivo el informar a los usuarios los tipos de archivos permitidos subir a la plataforma', '2021-07-19', '2021-07-19', '0000-00-00', 1, 'pdf1.pdf', 1, 1, 1, 1, 2),
-(6, 'solo se aceptan estos formatos', 'Informacion', 'El presente archivo tiene como objetivo el informar a los usuarios los tipos de archivos permitidos subir a la plataforma', '2021-07-19', '2021-07-19', '0000-00-00', 1, 'pdf1.pdf', 1, 1, 2, 3, 2),
+(6, 'solo se aceptan estos formatos', 'Informacion', 'El presente archivo tiene como objetivo el informar a los usuarios los tipos de archivos permitidos subir a la plataforma', '2021-07-19', '2021-07-19', '2021-08-04', 4, 'pdf1.pdf', 1, 1, 2, 3, 2),
 (7, 'solo se aceptan estos formatos', 'Informacion', 'El presente archivo tiene como objetivo el informar a los usuarios los tipos de archivos permitidos subir a la plataforma', '2021-07-19', '2021-07-19', '0000-00-00', 1, 'pdf1.pdf', 1, 1, 2, 3, 3),
-(8, 'solo se aceptan estos formatos', 'Informacion', 'El presente archivo tiene como objetivo el informar a los usuarios los tipos de archivos permitidos subir a la plataforma', '2021-07-19', '2021-07-19', '0000-00-00', 4, 'pdf1.pdf', 1, 1, 2, 3, 5),
-(9, 'Archivos como estos', 'Informacion', 'El presente archivo tiene como objetivo el informar a los usuarios los tipos de archivos permitidos subir a la plataforma', '2021-07-19', '2021-07-19', '0000-00-00', 1, 'pdf1.pdf', 2, 1, 3, 3, 5),
-(23, 'metodos de busqueda', NULL, 'es un archivo de datos relacionados al tema buscado', NULL, '2021-08-02', NULL, 3, 'metodos-de-busqueda.pdf', 4, 7, 2, 2, 36);
+(8, 'solo se aceptan estos formatos', 'Informacion', 'El presente archivo tiene como objetivo el informar a los usuarios los tipos de archivos permitidos subir a la plataforma', '2021-07-19', '2021-07-19', '0000-00-00', 3, 'pdf1.pdf', 1, 1, 2, 3, 5),
+(9, 'Archivos como estos', 'Informacion', 'El presente archivo tiene como objetivo el informar a los usuarios los tipos de archivos permitidos subir a la plataforma', '2021-07-19', '2021-07-19', '2021-08-04', 2, 'pdf1.pdf', 2, 1, 3, 3, 5),
+(23, 'metodos de busqueda', NULL, 'es un archivo de datos relacionados al tema buscado', NULL, '2021-08-02', NULL, 3, 'metodos-de-busqueda.pdf', 4, 7, 2, 2, 36),
+(32, 'sistemas expertos', NULL, 'a dfasdasd as das das dasd as', NULL, '2021-08-03', NULL, 3, 'lectura05.Sistemasexpertos-herramientadedesarrollo.pdf', 2, 8, 2, 2, 46),
+(36, 'BFS', NULL, 'asd as das dasda sdas', '2021-08-04', '2021-08-04', NULL, 1, 'BFS.docx', 1, 12, 1, 1, 74);
 
 -- --------------------------------------------------------
 
@@ -244,7 +316,9 @@ CREATE TABLE `docente` (
 --
 
 INSERT INTO `docente` (`id_docente`, `tutoria`, `id_materia`, `id_seccion`, `id_persona`, `codigo_docente`) VALUES
-(1, 1, 2, 1, 1, 'DC_1');
+(1, 1, 2, 1, 1, 'DC_1'),
+(3, 1, 72, 12, 6, 'DC_6'),
+(4, 1, 22, 5, 7, 'DC_7');
 
 -- --------------------------------------------------------
 
@@ -290,6 +364,27 @@ INSERT INTO `grado` (`id_grado`, `nro_grado`, `text_grado`) VALUES
 (5, 3, 'Tercero'),
 (6, 4, 'Cuarto'),
 (7, 6, 'Todos');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `lista_docente`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `lista_docente` (
+`codigo_docente` varchar(10)
+,`nombre_persona` varchar(20)
+,`apellido_persona` varchar(40)
+,`fecha_nacimiento` date
+,`edad` int(2)
+,`estado_user` int(1)
+,`genero` varchar(20)
+,`usuario` varchar(50)
+,`text_grado` varchar(20)
+,`letra_g` varchar(2)
+,`nombre_materia` varchar(20)
+,`id_docente` int(11)
+);
 
 -- --------------------------------------------------------
 
@@ -356,7 +451,35 @@ INSERT INTO `materia` (`id_materia`, `nombre_materia`, `id_seccion`) VALUES
 (50, 'Matematicas', 5),
 (51, 'Matematicas', 6),
 (52, 'Matematicas', 7),
-(53, 'Matematicas', 8);
+(53, 'Matematicas', 8),
+(54, 'Arte', 10),
+(55, 'Historia', 10),
+(56, 'Fisica', 10),
+(57, 'Geografia', 10),
+(58, 'Computación', 10),
+(59, 'Química', 10),
+(60, 'Matematicas', 10),
+(61, 'Arte', 11),
+(62, 'Historia', 11),
+(63, 'Fisica', 11),
+(64, 'Geografia', 11),
+(65, 'Computación', 11),
+(66, 'Química', 11),
+(67, 'Matematicas', 11),
+(68, 'Arte', 12),
+(69, 'Historia', 12),
+(70, 'Fisica', 12),
+(71, 'Geografia', 12),
+(72, 'Computación', 12),
+(73, 'Química', 12),
+(74, 'Matematicas', 12),
+(75, 'Arte', 13),
+(76, 'Historia', 13),
+(77, 'Fisica', 13),
+(78, 'Geografia', 13),
+(79, 'Computación', 13),
+(80, 'Química', 13),
+(81, 'Matematicas', 13);
 
 -- --------------------------------------------------------
 
@@ -434,7 +557,10 @@ CREATE TABLE `persona` (
 INSERT INTO `persona` (`id_persona`, `nombre_persona`, `apellido_persona`, `fecha_nacimiento`, `edad`, `estado_user`, `genero`, `usuario`, `clave`) VALUES
 (1, 'Fernando', 'Flores Condori', '1999-02-28', 22, 1, 'MASCULINO', 'ffloresc@gmail.com', '123fernando'),
 (2, 'Erik', 'Perez Loayza', '2006-02-28', 15, 1, 'MASCULINO', 'perez@gmail.com', '123perez'),
-(4, 'Mark', 'Morales Rath', '2007-06-12', 14, 1, 'MASCULINO', 'mark@gmail.com', '123mark');
+(4, 'Mark', 'Morales Rath', '2007-06-12', 14, 1, 'MASCULINO', 'mark@gmail.com', '123mark'),
+(5, 'nikie', 'nina abarca', '1995-11-17', 26, 1, 'Masculino', 'nikie@gmail.com', 'nikie'),
+(6, 'Jhon', 'Arias Rivera', '1998-02-09', 23, 1, 'Masculino', 'jhon@gmail.com', 'jhon123'),
+(7, 'Giuliana', 'sahuarico del Pilar', '1996-06-03', 25, 1, 'Femenino', 'yuya@hotmail.com', 'yuya123');
 
 -- --------------------------------------------------------
 
@@ -565,6 +691,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Estructura para la vista `lista_docente`
+--
+DROP TABLE IF EXISTS `lista_docente`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `lista_docente`  AS SELECT `docente`.`codigo_docente` AS `codigo_docente`, `persona`.`nombre_persona` AS `nombre_persona`, `persona`.`apellido_persona` AS `apellido_persona`, `persona`.`fecha_nacimiento` AS `fecha_nacimiento`, `persona`.`edad` AS `edad`, `persona`.`estado_user` AS `estado_user`, `persona`.`genero` AS `genero`, `persona`.`usuario` AS `usuario`, `grado`.`text_grado` AS `text_grado`, `seccion`.`letra_g` AS `letra_g`, `materia`.`nombre_materia` AS `nombre_materia`, `docente`.`id_docente` AS `id_docente` FROM ((((`persona` join `docente`) join `grado`) join `seccion`) join `materia`) WHERE `persona`.`id_persona` = `docente`.`id_persona` AND `grado`.`id_grado` = `seccion`.`id_grado` AND `seccion`.`id_seccion` = `materia`.`id_seccion` AND `materia`.`id_materia` = `docente`.`id_materia` AND `seccion`.`id_seccion` = `docente`.`id_seccion` ;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura para la vista `materia_alumnos`
 --
 DROP TABLE IF EXISTS `materia_alumnos`;
@@ -688,13 +823,13 @@ ALTER TABLE `tipo_archivo`
 -- AUTO_INCREMENT de la tabla `alumno`
 --
 ALTER TABLE `alumno`
-  MODIFY `id_alumno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_alumno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `archivo`
 --
 ALTER TABLE `archivo`
-  MODIFY `id_archivo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id_archivo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT de la tabla `categoria_archivo`
@@ -706,7 +841,7 @@ ALTER TABLE `categoria_archivo`
 -- AUTO_INCREMENT de la tabla `docente`
 --
 ALTER TABLE `docente`
-  MODIFY `id_docente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_docente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `grado`
@@ -718,13 +853,13 @@ ALTER TABLE `grado`
 -- AUTO_INCREMENT de la tabla `materia`
 --
 ALTER TABLE `materia`
-  MODIFY `id_materia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id_materia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `seccion`
