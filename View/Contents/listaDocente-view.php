@@ -66,6 +66,7 @@
                                     <th>Grado</th>
                                     <th>Seccion</th>
                                     <th>Materia</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </thead>
                                 <tbody id="myTable">
@@ -91,6 +92,11 @@
                                     <td><?php echo $listado[8]; ?></td>
                                     <td><?php echo $listado[9]; ?></td>
                                     <td><?php echo $listado[10]; ?></td>
+                                    <td><form action="edithUser" method="post">
+                                            <label for="<?php echo $listado[11]; ?>" class="icon-pencil text-warning"></label>
+                                            <input type="text" name="code" id="code" class="form-control" style="display:none;" value="<?php echo $listado[0]; ?>">
+                                            <input style="display:none;" type="submit" value="<?php echo $listado[11]; ?>" name="send" id="<?php echo $listado[11]; ?>">
+                                        </form></td>
                                 </tr>
                                 <?php } ?>
                                 </tbody>

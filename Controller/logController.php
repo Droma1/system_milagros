@@ -11,7 +11,7 @@
             $clave = mainModel::clear_string($_POST['clave_log']);
 
             if($clave != "" && $usuario!=""){
-                $clave_c = mainModel::consulta_simple("select clave from persona where usuario = '$usuario';");
+                $clave_c = mainModel::consulta_simple("select clave from persona where usuario = '$usuario' and estado_user = 1;");
                 if($clave_c->rowCount() >=1){
                     $verif_c = $clave_c->fetch();
                     $verif = (array) $verif_c;
@@ -54,7 +54,7 @@
                         "Alerta" => "msg",
                         "icon" => "error",
                         "title" => "Operacion Fallida",
-                        "msg" => "No se encontraron coincidencias."
+                        "msg" => "No se encontraron coincidencias o su cuenta fue suspendida."
                     ];
                 }
                 

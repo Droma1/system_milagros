@@ -8,6 +8,8 @@
         echo $registro->registro_archivo();
     }elseif(isset($_POST['nombre_d']) && isset($_POST['apellido_d']) && isset($_POST['f_nacimiento_d']) && isset($_POST['edad_d']) && isset($_POST['genero_d']) && isset($_POST['usuario_d']) && isset($_POST['cl1_d']) && isset($_POST['cl2_d']) && isset($_POST['seccion_d']) && isset($_POST['materia_d']) && isset($_POST['grado_d'])){
         echo $registro->registro_docente();
+    }elseif(isset($_POST['id'])){
+        echo $registro->docente_update();
     }else{
         echo "Problemas al procesar formulario";
     }

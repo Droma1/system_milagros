@@ -152,5 +152,56 @@
             $consulta = docenteModel::lista_docente_();
             return $consulta;
         }
+        public function docente_update(){
+            $nombre = mainModel::clear_string($_POST['nombre']);
+            $apellido = mainModel::clear_string($_POST['apellido']);
+            $f_nacimiento = mainModel::clear_string($_POST['f_nacimiento']);
+            $edad = mainModel::clear_string($_POST['edad']);
+            $estado = mainModel::clear_string($_POST['estado']);
+            $genero = mainModel::clear_string($_POST['genero']);
+            $usuario = mainModel::clear_string($_POST['user_']);
+            $codigo = mainModel::clear_string($_POST['id']);
+            $clave = mainModel::clear_string($_POST['pass']);
+            $type = mainModel::clear_string($_POST['type']);
+            if($nombre !="" && $apellido !="" && $f_nacimiento!="" && $edad!="" && $estado!="" && $genero !="" && $usuario!="" && $codigo!="" && $clave!="" && $type!=""){
+                $dato =[
+                    "nombre" => $nombre,
+                    "apellido" => $apellido,
+                    "nacimiento" => $f_nacimiento,
+                    "edad" => $edad,
+                    "estado" => $estado,
+                    "genero" => $genero,
+                    "usuario" => $usuario,
+                    "codigo" => $codigo,
+                    "pass" => $clave,
+                    "tipo" => $type
+                ];
+                $consulta = docenteModel::edith_us($dato);
+                if($consulta->rowCount() >= 1){
+                    $alerta = [
+                        "Alerta" => "simple",
+                        "icon" => "success",
+                        "title" => "Registro exitoso!",
+                        "msg" => "!Su registro fue procesado exitosamente¡."
+                    ];
+                }else{
+                    $alerta = [
+                        "Alerta" => "simple",
+                        "icon" => "warning",
+                        "title" => "Error al Procesar formulario",
+                        "msg" => "se produjo un error al registrar el formulario, profavor verifique en su tabla de esperas..."
+                    ];
+                }
+            }else{
+                $alerta = [
+                    "Alerta" => "simple",
+                    "icon" => "error",
+                    "title" => "Error al Procesar formulario",
+                    "msg" => "!Verifique que todos los campos del formulario esten completos.¡"
+                ];
+            }
+            
+            return mainModel::alerts($alerta);
+        }
     }
 ?>

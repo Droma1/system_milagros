@@ -21,5 +21,13 @@
              $sql = mainModel::consulta_simple("call lista_alumno('".$dato."');");
              return $sql;
          }
+         protected function userEdith($dato){
+             $sql = mainModel::consulta_simple("call user_(".$dato["id"].",".$dato["type"].");");
+             return $sql;
+         }
+         protected function edith_u($dato){
+             $sql = mainModel::consulta_simple("call editar_u('".$dato["nombre"]."','".$dato["apellido"]."','".$dato["nacimiento"]."',".$dato["edad"].",".$dato["estado"].",'".$dato["genero"]."','".$dato["usuario"]."','".$dato["codigo"]."','".$dato["pass"]."',".$dato["tipo"].");");
+             return $sql;
+         }
      }
 ?>

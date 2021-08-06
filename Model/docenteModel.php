@@ -25,5 +25,9 @@
              $sql = mainModel::consulta_simple("select * from lista_docente;");
              return $sql;
          }
+         protected function edith_us($dato){
+            $sql = mainModel::consulta_simple("call editar_u('".$dato["nombre"]."','".$dato["apellido"]."','".$dato["nacimiento"]."',".$dato["edad"].",".$dato["estado"].",'".$dato["genero"]."','".$dato["usuario"]."','".$dato["codigo"]."','".$dato["pass"]."',".$dato["tipo"].");");
+            return $sql;
+        }
      }
 ?>

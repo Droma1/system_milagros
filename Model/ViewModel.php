@@ -1,7 +1,7 @@
 <?php 
 	class viewModel{
 		protected function view_Model($vistas){
-			$listaBlanca=["home","search","login","index","resourses","perfil","registro","publish","observed","pending","removed","reading","edith","publishAlumno","observedAlumno","pendingAlumno","removedAlumno","registroAlumno","registroDocente","listaAlumno","listaDocente"];
+			$listaBlanca=["home","search","login","index","resourses","perfil","registro","publish","observed","pending","removed","reading","edith","publishAlumno","observedAlumno","pendingAlumno","removedAlumno","registroAlumno","registroDocente","listaAlumno","listaDocente","edithUser"];
 			$listaAlmacen=[];
 			
 			if(in_array($vistas, $listaBlanca)){

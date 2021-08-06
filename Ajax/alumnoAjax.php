@@ -5,6 +5,9 @@
     if(isset($_POST['nombre']) && isset($_POST['apellido']) && isset($_POST['f_nacimiento']) && isset($_POST['edad']) && isset($_POST['genero']) && isset($_POST['usuario']) && isset($_POST['cl1']) && isset($_POST['cl2']) ){
         $registro = new alumnoController();
         echo $registro->registro_alumno();
+    }elseif(isset($_POST['id'])){
+        $edith = new alumnoController();
+        echo $edith->alumno_update();
     }else{
         echo "Problemas al procesar formulario";
     }
