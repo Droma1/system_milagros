@@ -1,5 +1,5 @@
 <?php
-	const SERVERURL="http://192.168.0.10/web/Colegio/";
+	const SERVERURL="http://192.168.0.10/web/colegio/";
 		//direccion de mi servidor
 		//localhost/colegio/
 	const COMPANY="I.E. Sr. de los Milagros";

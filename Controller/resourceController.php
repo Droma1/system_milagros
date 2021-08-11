@@ -39,8 +39,8 @@
             $tipo = mainModel::clear_string($dato3);
             try{
                 $resultado = resourceModel::filtrern($grado,$materia,$tipo);
-            }catch (Ecaption $e){
-                echo $e;
+            }catch (Exception $e){
+                echo $e."------>";
             }
 
             return $resultado;

@@ -30,9 +30,9 @@ $datos = $name->category();
                                 <h3><?php echo $respuesta[0]; ?></h3>
                                 <p><?php echo $respuesta[1]; ?></p>
                             </div>
-                            <div class="icon">
+                            <a href="resourses"><div class="icon">
                                 <i class="icon-folder-open"></i>
-                            </div>
+                            </div></a>
                         </div>
                     </div>
                 </div>

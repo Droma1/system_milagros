@@ -26,10 +26,12 @@
                       <li><a href="login">Login</a></li>
                       <li><a href="home">Inicio</a></li>
                       <li><a href="resourses">Recursos</a></li>
-                      <li><a href="#">Nosotros</a></li>
+                      <li><a href="Nosotros">Nosotros</a></li>
                     </ul>
                   </div>
                 </div>
+                
+
               </div>
           </div>
     </div>
@@ -39,8 +41,11 @@
     <ul>
       <li><a href="home">Inicio</a></li>
       <li><a href="resourses">Recursos</a></li>
-      <li><a href="#">Nosotros</a></li>
+      <li><a href="Nosotros">Nosotros</a></li>
+
+      
     </ul>
   </div>
+  
 </section>
 
